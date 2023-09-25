@@ -1,0 +1,113 @@
+=========BEST ARCHITECHTURE==========
+===ROUTING
+-installer react-router-dom
+ensuite on cree un fichier a part nommer: router.jsx puis dedans on appel la fonction createBrowserRouter comme sa:
+import { createBrowserRouter } from "react-router-dom";
+import App from "./App";
+
+const router = createBrowserRouter([
+    {
+        path: '/',
+        element: <App/>
+    }
+])
+export default router
+
+et c'est comme sa qu'on va definir nos routes en tant que objet. 
+Ensuite on va dans notre main, on appel labas notre router.jsx et le routerprovider juste comme sa en lui donnant comme props router notre component router
+    <RouterProvider router={router}/>
+
+ensuite on se fais un dossier views ou on mettra tout nos component de vues commes Categories, CategorieVente etc...
+apres tu continue ainsi. Si t'a ps besoin du appComponent, tu le degage
+
+
+
+====================LAYOUTING===========
+tu cree un fichier layout ou je mettrai ce que les trucs ont en commun et dans chaque component je lui donne les element qu'il a besoin.
+et dans le layout principal, je met juste le turc <outlet/> pour dire que ici je vais deverser le contenu
+ainsi dans cet exemple dans le login, on a juste son contenu  specifique au login et dans le signup aussi. Le tout on le deverse dans le layout.
+qui sera router en / pui va attendre comme enfant: signup ou login like that:
+    path: "/",
+    element: <MainLayout />,
+    children: [
+      {
+        path: "/login",
+        element: <Login />,
+      },
+      {
+        path: "/signup",
+        element: <Signup />,
+      },
+    ],
+  },
+
+et maintenant dazns notre router on va definir un route grouper avec les childrens et tout pour avoir un system de dabshboarding dans un same layout
+Alors c'est dasn notre navigation qu'on va definir notre routing... Un tempalte pris depuis tailwind lol
+https://tailwindui.com/components/application-ui/application-shells/stacked
+apres il va rager parceque faut inataller headlessUI 
+ path: "/",
+    element: <DashboardLayout />,
+    children: [
+      {
+        path: "/dashboard",
+        element: <Navigate to="/" />,je lui ai dit: quand je fais /dashboard, <Navigate> genre va vers /
+      },
+      {
+        path: "/",
+        element: <Dashboard />,  et quand tu arrive vers / appellenle component dashbord. Ce qui fis que quand il fis /dashboard il nous redirige directement vers /
+      },
+      {
+        path: "/categories",
+        element: <Categories />,
+      },
+      {
+        path: "/categoriesConfection",
+        element: <CategoriesConf />,
+      },
+      {
+        path: "/categoriesVente",
+        element: <CategorieVente />,
+      },
+    ],
+
+et dns le tamplate le layout principal:
+const navigation = [
+  { name: "Dashboard", to: "/" },
+  { name: "Categories", to: "/categories" },
+  { name: "Confection", to: "/categoriesConfection" },
+  { name: "Vente", to: "/categoriesVente" },
+];
+je definit le routing quoi et a la place de faire les ul li etc...
+ {navigation.map((item) => (
+                          <NavLink
+                            key={item.name}
+                            to={item.to}
+                            className={({ isActive }) =>
+                              classNames(
+                                isActive
+                                  ? "bg-gray-900 text-white"
+                                  : "text-gray-300 hover:bg-gray-700 hover:text-white",
+                                "rounded-md px-3 py-2 text-sm font-medium"
+                              )
+                            }
+                          >
+                            {item.name}
+                          </NavLink>
+je mappe quoi pour definir le routing. etc le isActive sa viens du template lol
+
+et un peu de simplification, on remplace juste les views par une simplification et on passe le commen par des props. A savoir title et children. 
+le props children est utiliser si on veux passerdes balises html en props.
+ici on va passer le contenude article de conf, article de vente etc...
+
+===================CONTEXT========
+dans le context, j'utilise des initialisation vide pour avoir l'autocompletion
+
+... juste pour autocomplete
+const StateContext = createContext({
+    currentUser: {},
+    userToken: null,
+    setCurrentUser: () => { },
+    setUserToken:()=>{}
+});
+...
+NB: Quand on declare un context, on doit effectivement le declarer dans le main.jsx. Sans quoi le truc ne verra ps les initialisation dans les state du Context
