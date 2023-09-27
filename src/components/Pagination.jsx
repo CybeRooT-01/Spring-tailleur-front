@@ -1,4 +1,3 @@
-// eslint-disable-next-line react/prop-types
 const Pagination = ({ currentPage, npage, changeCPage, prePage, nextPage }) => {
   const numbers = [...Array(npage + 1).keys()].slice(1);
 

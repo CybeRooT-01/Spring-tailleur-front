@@ -7,7 +7,6 @@ const StateContext = createContext({
   setUserToken: () => {},
 });
 
-// eslint-disable-next-line react/prop-types
 export const ContextProvider = ({ children }) => {
   const [currentUser, setCurrentUser] = useState({});
   const storedToken = localStorage.getItem("TOKEN");
