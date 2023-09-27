@@ -1,32 +1,39 @@
 // eslint-disable-next-line react/prop-types
 const Pagination = ({ currentPage, npage, changeCPage, prePage, nextPage }) => {
   const numbers = [...Array(npage + 1).keys()].slice(1);
+
   return (
-    <nav>
-      <ul className="pagination">
+    <nav className="mt-4 flex justify-center">
+      <ul className="flex">
         <li className="page-item">
-          <a href="#" className="page-link" onClick={prePage}>
+          <button
+            onClick={prePage}
+            className="px-3 py-1 border rounded-md text-gray-700 border-gray-300  hover:bg-gray-100 focus:outline-none focus:ring focus:ring-gray-300"
+          >
             Prev
-          </a>
+          </button>
         </li>
         {numbers.map((number, index) => (
-          <li
-            key={index}
-            className={"page-item " + (currentPage === number ? "active" : "")}
-          >
-            <a
-              href="#"
-              className="page-link"
+          <li key={index}>
+            <button
               onClick={() => changeCPage(number)}
+              className={`${
+                currentPage === number
+                  ? "bg-blue-500 text-black"
+                  : "text-gray-700"
+              } px-3 py-1 border rounded-md border-gray-300 hover:bg-gray-100 focus:outline-none focus:ring focus:ring-gray-300`}
             >
               {number}
-            </a>
+            </button>
           </li>
         ))}
         <li className="page-item">
-          <a href="#" className="page-link" onClick={nextPage}>
+          <button
+            onClick={nextPage}
+            className="px-3 py-1 border rounded-md text-gray-700 border-gray-300 hover:bg-gray-100 focus:outline-none focus:ring focus:ring-gray-300"
+          >
             Next
-          </a>
+          </button>
         </li>
       </ul>
     </nav>

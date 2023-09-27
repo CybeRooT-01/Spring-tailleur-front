@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import PageComponent from "../components/PageComponent";
 import axiosClient from "./axios";
+import Pagination from "../components/Pagination";
 const Categories = () => {
   const [etat, setEtat] = useState(true);
   const [selectedOption, setSelectedOption] = useState("");
@@ -12,7 +13,27 @@ const Categories = () => {
   const [typeCategorie, setTypeCategorie] = useState("VENTE");
   const [idToUpdate, setIdToUpdate] = useState(0);
   const [okDisabled, setOkDisabled] = useState(false);
+  const [dataLen, setDataLen] = useState(0);
 
+  const [currentPage, setCurrentPage] = useState(1);
+  const recordsPerPage = 2;
+  const lastIndex = currentPage * recordsPerPage;
+  const firstIndex = lastIndex - recordsPerPage;
+  const npage = Math.ceil(dataLen / recordsPerPage);
+
+  const prePage = () => {
+    if (currentPage !== 1) {
+      setCurrentPage(currentPage - 1);
+    }
+  };
+  const changeCPage = (id) => {
+    setCurrentPage(id);
+  };
+  const nextPage = () => {
+    if (currentPage !== npage) {
+      setCurrentPage(currentPage + 1);
+    }
+  };
   const checkAll = (e) => {
     const isChecked = e.target.checked;
     setAllChecked(isChecked);
@@ -52,6 +73,7 @@ const Categories = () => {
       .get("/categorie")
       .then((response) => {
         setCategories(response.data.reverse());
+        setDataLen(response.data.length);
       })
       .catch((error) => {
         console.log(error);
@@ -252,7 +274,7 @@ const Categories = () => {
                       ))}
                   </>
                 ) : (
-                  categories.map((item, index) => (
+                  categories.slice(firstIndex, lastIndex).map((item, index) => (
                     <tr key={index}>
                       <td className="px-6 py-4 whitespace-nowrap">
                         <div className="flex items-center">
@@ -283,6 +305,15 @@ const Categories = () => {
             </table>
           </div>
         </div>
+      </div>
+      <div className="flex justify-center ">
+        <Pagination
+          currentPage={currentPage}
+          npage={npage}
+          changeCPage={changeCPage}
+          prePage={prePage}
+          nextPage={nextPage}
+        />
       </div>
     </PageComponent>
   );
