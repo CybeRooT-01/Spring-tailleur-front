@@ -1,7 +1,11 @@
 import PageComponent from "../components/PageComponent";
 
 const CategoriesConf = () => {
-   return <PageComponent title={"Categories de confection"}>children</PageComponent>;
-}
+  return (
+    <PageComponent title={"Categories de confection"} showSwitchButton={true}>
+      children categorie conf
+    </PageComponent>
+  );
+};
 
-export default CategoriesConf
+export default CategoriesConf;
